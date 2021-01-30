@@ -12,6 +12,8 @@ import javax.persistence.MappedSuperclass;
 @MappedSuperclass
 @Data
 public sealed abstract class Guild permits CentralGuild, ProvinceGuild {
+    public static final String CODE = "code";
+
     @Id
     @Column(name = "code")
     private int code;

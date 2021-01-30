@@ -1,0 +1,56 @@
+{
+	"info": {
+		"_postman_id": "027ee0f9-3df3-44c8-be6b-4020d8375388",
+		"name": "Markaz",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hoviat",
+			"item": [
+				{
+					"name": "basic-info",
+					"item": [
+						{
+							"name": "central guild",
+							"item": [
+								{
+									"name": "Get Central Guild Page",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"page\": 0,\r\n    \"size\": 15,\r\n    \"sortBy\": \"uniqueId\",\r\n    \"asc\":true\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/hoviat/cg",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"hoviat",
+												"cg"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
