@@ -9,15 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CountryDivisionDao extends JpaRepository<CountryDivision, Integer> {
-
-    /*@Autowired
-    private SessionFactory sessionFactory;
-
-    public List<CountryDivision> getAll() {
-        StoredProcedureQuery query = sessionFactory.openSession().createNamedStoredProcedureQuery("getAll");
-        query.execute();
-        List<CountryDivision> all = (List<CountryDivision>) query.getResultList();
-
-        return all;
-    }*/
 }
