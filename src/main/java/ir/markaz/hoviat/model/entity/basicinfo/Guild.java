@@ -1,6 +1,8 @@
 package ir.markaz.hoviat.model.entity.basicinfo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -11,8 +13,11 @@ import javax.persistence.MappedSuperclass;
  */
 @MappedSuperclass
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public sealed abstract class Guild permits CentralGuild, ProvinceGuild {
     public static final String CODE = "code";
+    public static final String DEFAULT_DIRECTION = "asc";
 
     @Id
     @Column(name = "code")

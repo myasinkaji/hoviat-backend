@@ -19,4 +19,15 @@ public final class ProvinceGuild extends Guild {
     @JoinColumn(name = "cg_fk")
     private CentralGuild centralGuild;
 
+    public ProvinceGuild() {
+
+    }
+
+    public ProvinceGuild(int code, String name, long uniqueId, long postalCode,
+                         String managerName, String phone, String mobile, boolean active,
+                         CountryDivision countryDivision, CentralGuild centralGuild) {
+        super(code, name, uniqueId, postalCode, managerName, phone, mobile, active);
+        this.countryDivision = countryDivision;
+        this.centralGuild = centralGuild;
+    }
 }

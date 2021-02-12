@@ -8,12 +8,19 @@ import org.springframework.data.domain.Sort;
  * @author Mohammad Yasin Sadeghi
  */
 public class ServiceUtil {
-    public static PageRequest createSpringPageRequest(ir.markaz.hoviat.model.vo.PageRequest request, String sort) {
-        return PageRequest.of(request.getPage(), request.getSize(), createSpringSort(request, sort));
+    public static PageRequest createSpringPageRequest(
+            ir.markaz.hoviat.model.vo.PageRequest pageRequest, String defaultSortProperty, String defaultDirection) {
+
+        return PageRequest.of(pageRequest.getPage(), pageRequest.getPageSize(),
+                createSpringSort(pageRequest, defaultSortProperty, defaultDirection));
     }
 
-    private static Sort createSpringSort(ir.markaz.hoviat.model.vo.PageRequest request, String sort) {
-        String s = StringUtils.isBlank(request.getSortBy()) ? sort : request.getSortBy();
-        return Sort.by(!request.isDesc() ? Sort.Order.desc(s) : Sort.Order.asc(s));
+    private static Sort createSpringSort(
+            ir.markaz.hoviat.model.vo.PageRequest request, String defaultSortProperty, String defaultDirection) {
+        String orderBy =
+                StringUtils.isNotBlank(request.getOrderBy()) ? request.getOrderBy() : defaultSortProperty;
+        String direction =
+                StringUtils.isNotBlank(request.getDirection()) ? request.getDirection() : defaultDirection;
+        return Sort.by(Sort.Direction.fromString(direction), orderBy);
     }
 }
