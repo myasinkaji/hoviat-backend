@@ -13,8 +13,10 @@ public class ProvinceGuildResponse {
     private final boolean active;
     private final String phone;
     private final String mobile;
+    private final String centralGuildName;
     private final int centralGuildCode;
-    private final int countryDivisionCode;
+    private final String countryDivisionName;
+    private final int countryDivisionId;
 
     public ProvinceGuildResponse(ProvinceGuild guild) {
         this.code = guild.getCode();
@@ -25,7 +27,9 @@ public class ProvinceGuildResponse {
         this.uniqueId = guild.getUniqueId();
         this.postalCode = guild.getPostalCode();
         this.active = guild.isActive();
+        this.centralGuildName = guild.getCentralGuild().getName();
         this.centralGuildCode = guild.getCentralGuild().getCode();
-        this.countryDivisionCode = guild.getCountryDivision().getCode();
+        this.countryDivisionName = guild.getCountryDivision().getName();
+        this.countryDivisionId = guild.getCountryDivision().getId();
     }
 }

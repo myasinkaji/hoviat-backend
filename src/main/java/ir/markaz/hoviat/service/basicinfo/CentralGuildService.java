@@ -7,9 +7,11 @@ import ir.markaz.hoviat.model.vo.PageResponse;
 import ir.markaz.hoviat.service.ServiceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -50,5 +52,9 @@ public class CentralGuildService {
         } catch (EmptyResultDataAccessException e) {
             log.debug("there is no record with this code: {}", code);
         }
+    }
+
+    public List<Object[]> getAllLazy() {
+        return dao.getIdAndName();
     }
 }

@@ -3,6 +3,7 @@ package ir.markaz.hoviat.controller.basicinfo;
 import ir.markaz.hoviat.controller.Addresses;
 import ir.markaz.hoviat.model.vo.PageRequest;
 import ir.markaz.hoviat.model.vo.PageResponse;
+import ir.markaz.hoviat.model.vo.LazyResponse;
 import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionRequest;
 import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionResponse;
 import ir.markaz.hoviat.service.basicinfo.CountryDivisionService;
@@ -37,6 +38,18 @@ public class CountryDivisionController {
                         .collect(Collectors.toList());
         log.info("Getting country division page...");
         return new PageResponse<>(results, pageResult.getCount());
+    }
+
+    @GetMapping(value = Addresses.LAZY)
+    @CrossOrigin
+    public PageResponse<List<LazyResponse>> getAllLazy() {
+        final var allLazy =
+                service.getAllLazy();
+        List<LazyResponse> results =
+                allLazy.stream().parallel().map(LazyResponse::new)
+                        .collect(Collectors.toList());
+        log.info("Getting all lazy country divisions...");
+        return new PageResponse<>(results, (long) results.size());
     }
 
     @PostMapping

@@ -4,6 +4,7 @@ import ir.markaz.hoviat.controller.Addresses;
 import ir.markaz.hoviat.model.entity.basicinfo.CentralGuild;
 import ir.markaz.hoviat.model.vo.PageRequest;
 import ir.markaz.hoviat.model.vo.PageResponse;
+import ir.markaz.hoviat.model.vo.LazyResponse;
 import ir.markaz.hoviat.model.vo.basicinfo.centralguild.CentralGuildRequest;
 import ir.markaz.hoviat.model.vo.basicinfo.centralguild.CentralGuildResponse;
 import ir.markaz.hoviat.service.basicinfo.CentralGuildService;
@@ -38,6 +39,18 @@ public class CentralGuildController {
                         .collect(Collectors.toList());
         log.info("Getting page...");
         return new PageResponse<>(results, pageResult.getCount());
+    }
+
+    @GetMapping(value = Addresses.LAZY)
+    @CrossOrigin
+    public PageResponse<List<LazyResponse>> getAllLazy() {
+        final var allLazy =
+                service.getAllLazy();
+        List<LazyResponse> results =
+                allLazy.stream().parallel().map(LazyResponse::new)
+                        .collect(Collectors.toList());
+        log.info("Getting all lazy central guilds...");
+        return new PageResponse<>(results, (long) results.size());
     }
 
     @PostMapping

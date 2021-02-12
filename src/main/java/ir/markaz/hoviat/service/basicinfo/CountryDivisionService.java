@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -59,6 +60,10 @@ public class CountryDivisionService {
                 CountryDivision.CODE, CountryDivision.DEFAULT_DIRECTION));
         long count = dao.count();
         return new PageResponse<>(page, count);
+    }
+
+    public List<Object[]> getAllLazy() {
+        return dao.getIdAndName();
     }
 
     public void delete(int code) {
