@@ -42,8 +42,7 @@ public class CentralGuildService {
     public PageResponse<Page<CentralGuild>> getPage(PageRequest pageRequest) {
         Page<CentralGuild> page = dao.findAll(ServiceUtil.createSpringPageRequest(pageRequest,
                 CentralGuild.CODE, CentralGuild.DEFAULT_DIRECTION));
-        long count = dao.count();
-        return new PageResponse<>(page, count);
+        return new PageResponse<>(page, page.getTotalElements());
     }
 
     public void delete(int code) {

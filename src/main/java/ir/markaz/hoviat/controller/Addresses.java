@@ -5,4 +5,5 @@ public interface Addresses {
     String LAZY = "/lazy";
     String PROVINCE_GUILD = "pg";
     String COUNTRY_DIVISION = "cd";
+    String TAG_COMPANY = "tc";
 }

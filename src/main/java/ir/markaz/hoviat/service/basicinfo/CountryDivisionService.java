@@ -58,8 +58,7 @@ public class CountryDivisionService {
     public PageResponse<Page<CountryDivision>> getPage(PageRequest pageRequest) {
         Page<CountryDivision> page = dao.findAll(ServiceUtil.createSpringPageRequest(pageRequest,
                 CountryDivision.CODE, CountryDivision.DEFAULT_DIRECTION));
-        long count = dao.count();
-        return new PageResponse<>(page, count);
+        return new PageResponse<>(page, page.getTotalElements());
     }
 
     public List<Object[]> getAllLazy() {
