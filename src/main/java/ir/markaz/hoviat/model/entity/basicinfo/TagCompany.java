@@ -11,6 +11,9 @@ import javax.persistence.*;
 @Table(name = "tag_company")
 @Data
 public final class TagCompany {
+    public static final String ACTIVE = "active";
+    public static final String DEFAULT_DIRECTION = "desc";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
@@ -40,4 +43,24 @@ public final class TagCompany {
     @Column(name = "active", nullable = false)
     private boolean active;
 
+    public TagCompany() {
+    }
+
+    public TagCompany(long uniqueId, String companyName, long postalCode,
+                      int establishedYear, String managerName, boolean producer,
+                      boolean importer, boolean visualTag, boolean rfidTag,
+                      boolean microchipTag, boolean bolusesTag, boolean active) {
+        this.uniqueId = uniqueId;
+        this.companyName = companyName;
+        this.postalCode = postalCode;
+        this.establishedYear = establishedYear;
+        this.managerName = managerName;
+        this.producer = producer;
+        this.importer = importer;
+        this.visualTag = visualTag;
+        this.rfidTag = rfidTag;
+        this.microchipTag = microchipTag;
+        this.bolusesTag = bolusesTag;
+        this.active = active;
+    }
 }
