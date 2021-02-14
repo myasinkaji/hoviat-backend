@@ -1,10 +1,10 @@
 package ir.markaz.hoviat.model.entity.basicinfo;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * @author Mohammad Yasin Sadeghi
@@ -25,6 +25,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 public final class CountryDivision {
     public static final String CODE = "code";
+    public static final String TYPE = "type";
     public static final String DEFAULT_DIRECTION = "asc";
 
     @Id
@@ -39,6 +40,8 @@ public final class CountryDivision {
     private String name;
     @Column(name = "type", length = 1)
     private int type;
+    @OneToMany(mappedBy = "parent")
+    private List<CountryDivision> children;
 
     public CountryDivision(int code, CountryDivision parent, String name, int type) {
         this.code = code;

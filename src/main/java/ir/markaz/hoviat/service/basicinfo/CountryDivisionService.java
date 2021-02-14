@@ -61,6 +61,10 @@ public class CountryDivisionService {
         return new PageResponse<>(page, page.getTotalElements());
     }
 
+    public CountryDivision getParent() {
+        return dao.getParent();
+    }
+
     public List<Object[]> getAllLazy() {
         return dao.getIdAndName();
     }

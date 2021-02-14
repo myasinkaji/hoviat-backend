@@ -14,4 +14,7 @@ import java.util.List;
 public interface CountryDivisionDao extends JpaRepository<CountryDivision, Integer> {
     @Query("select cd.id, cd.name from CountryDivision cd")
     List<Object[]> getIdAndName();
+
+    @Query("select cd from CountryDivision cd where cd.parent is null")
+    CountryDivision getParent();
 }

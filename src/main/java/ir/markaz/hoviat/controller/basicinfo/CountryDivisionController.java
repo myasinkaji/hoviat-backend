@@ -1,13 +1,16 @@
 package ir.markaz.hoviat.controller.basicinfo;
 
 import ir.markaz.hoviat.controller.Addresses;
+import ir.markaz.hoviat.model.entity.basicinfo.CountryDivision;
+import ir.markaz.hoviat.model.vo.LazyResponse;
 import ir.markaz.hoviat.model.vo.PageRequest;
 import ir.markaz.hoviat.model.vo.PageResponse;
-import ir.markaz.hoviat.model.vo.LazyResponse;
+import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionFlatResponse;
 import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionRequest;
 import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionResponse;
 import ir.markaz.hoviat.service.basicinfo.CountryDivisionService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,17 +30,40 @@ public class CountryDivisionController {
 
     @GetMapping
     @CrossOrigin
-    public PageResponse<List<CountryDivisionResponse>> getPage(@PathParam("page") int page,
-                                                               @PathParam("pageSize") int pageSize,
-                                                               @PathParam("orderBy") String orderBy,
-                                                               @PathParam("order") String order) {
+    public PageResponse<List<CountryDivisionFlatResponse>> getPage(@PathParam("page") int page,
+                                                                   @PathParam("pageSize") int pageSize,
+                                                                   @PathParam("orderBy") String orderBy,
+                                                                   @PathParam("order") String order) {
         final var pageResult =
                 service.getPage(new PageRequest(page, pageSize, orderBy, order));
-        List<CountryDivisionResponse> results =
-                pageResult.getData().stream().parallel().map(CountryDivisionResponse::new)
+        List<CountryDivisionFlatResponse> results =
+                pageResult.getData().stream().parallel().map(CountryDivisionFlatResponse::new)
                         .collect(Collectors.toList());
         log.info("Getting country division page...");
         return new PageResponse<>(results, pageResult.getCount());
+    }
+
+    @GetMapping(value = Addresses.TREE)
+    @CrossOrigin
+    public CountryDivisionResponse getTree() {
+        final var parent = service.getParent();
+        return extractResponseTree(parent);
+    }
+
+    private CountryDivisionResponse mapCountryDivisionResponse(CountryDivision parent) {
+        return new CountryDivisionResponse(
+                parent.getId(), parent.getCode(), parent.getName(), parent.getType());
+    }
+
+    private CountryDivisionResponse extractResponseTree(CountryDivision parent) {
+        CountryDivisionResponse root = mapCountryDivisionResponse(parent);
+        if (!CollectionUtils.isEmpty(parent.getChildren())) {
+            for (CountryDivision countryDivision : parent.getChildren()) {
+                var child = extractResponseTree(countryDivision);
+                root.addChild(child);
+            }
+        }
+        return root;
     }
 
     @GetMapping(value = Addresses.LAZY)
