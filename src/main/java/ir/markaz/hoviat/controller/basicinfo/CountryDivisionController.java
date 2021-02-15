@@ -9,11 +9,14 @@ import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionFlatRe
 import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionRequest;
 import ir.markaz.hoviat.model.vo.basicinfo.countrydivision.CountryDivisionResponse;
 import ir.markaz.hoviat.service.basicinfo.CountryDivisionService;
+import ir.markaz.hoviat.service.helper.ControllerCacheManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PostConstruct;
 import javax.websocket.server.PathParam;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,11 +24,23 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping(value = Addresses.COUNTRY_DIVISION)
 @Slf4j
+@RequiredArgsConstructor
 public class CountryDivisionController {
     private final CountryDivisionService service;
+    private final ControllerCacheManager controllerCacheManager;
 
-    public CountryDivisionController(CountryDivisionService service) {
-        this.service = service;
+    @PostConstruct
+    public void init() {
+        loadTree();
+    }
+
+    private void loadTree() {
+        controllerCacheManager.setTree(prepareTree());
+    }
+
+    private synchronized void reloadTree() {
+        controllerCacheManager.evictTree();
+        controllerCacheManager.setTree(prepareTree());
     }
 
     @GetMapping
@@ -46,8 +61,12 @@ public class CountryDivisionController {
     @GetMapping(value = Addresses.TREE)
     @CrossOrigin
     public CountryDivisionResponse getTree() {
-        final var parent = service.getParent();
-        return extractResponseTree(parent);
+        return controllerCacheManager.getTree().orElseThrow(
+                () -> new RuntimeException("There is an exception is loading country divisions"));
+    }
+
+    private CountryDivisionResponse prepareTree() {
+        return extractResponseTree(service.getParent());
     }
 
     private CountryDivisionResponse mapCountryDivisionResponse(CountryDivision parent) {
@@ -82,6 +101,7 @@ public class CountryDivisionController {
     @CrossOrigin
     public void save(@Validated @RequestBody CountryDivisionRequest request) {
         service.save(request.getCode(), request.getParent(), request.getName(), request.getType());
+        reloadTree();
         log.info("saved country division with code: {}", request.getCode());
     }
 
@@ -89,6 +109,7 @@ public class CountryDivisionController {
     @CrossOrigin
     public void update(@Validated @RequestBody CountryDivisionRequest request) {
         service.update(request.getId(), request.getParent(), request.getName(), request.getType());
+        reloadTree();
         log.info("updated country division with code: {}", request.getCode());
     }
 
@@ -96,6 +117,7 @@ public class CountryDivisionController {
     @CrossOrigin
     public void delete(@RequestParam("code") int code) {
         service.delete(code);
+        reloadTree();
         log.info("deleted country division with code: {}", code);
     }
 
