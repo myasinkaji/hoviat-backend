@@ -31,7 +31,7 @@ public class CountryDivisionController {
 
     @PostConstruct
     public void init() {
-//        loadTree();
+        loadTree();
     }
 
     private void loadTree() {
