@@ -27,7 +27,6 @@ public class CentralGuildController {
     }
 
     @GetMapping
-    @CrossOrigin
     public PageResponse<List<CentralGuildResponse>> getPage(@PathParam("page") int page,
                                                             @PathParam("pageSize") int pageSize,
                                                             @PathParam("orderBy") String orderBy,
@@ -42,7 +41,6 @@ public class CentralGuildController {
     }
 
     @GetMapping(value = Addresses.LAZY)
-    @CrossOrigin
     public PageResponse<List<LazyResponse>> getAllLazy() {
         final var allLazy =
                 service.getAllLazy();
@@ -54,7 +52,6 @@ public class CentralGuildController {
     }
 
     @PostMapping
-    @CrossOrigin
     public void saveCentralGuild(@Validated @RequestBody CentralGuildRequest request) {
         postmanAdapter(request);
 
@@ -72,7 +69,6 @@ public class CentralGuildController {
     }
 
     @PutMapping
-    @CrossOrigin
     public void updateCentralGuild(@Validated @RequestBody CentralGuildRequest request) {
         postmanAdapter(request);
         var guild = new CentralGuild(request.getCode(), request.getName(), request.getUniqueId(),
@@ -83,7 +79,6 @@ public class CentralGuildController {
     }
 
     @DeleteMapping
-    @CrossOrigin
     public void deleteCentralGuild(@RequestParam("code") int code) {
         service.delete(code);
         log.info("deleted code: {}", code);

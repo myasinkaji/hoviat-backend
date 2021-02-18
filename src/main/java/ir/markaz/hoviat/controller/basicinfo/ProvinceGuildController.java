@@ -37,7 +37,6 @@ public class ProvinceGuildController {
     }
 
     @GetMapping
-    @CrossOrigin
     public PageResponse<List<ProvinceGuildResponse>> getPage(@PathParam("page") int page,
                                                              @PathParam("pageSize") int pageSize,
                                                              @PathParam("orderBy") String orderBy,
@@ -52,7 +51,6 @@ public class ProvinceGuildController {
     }
 
     @PostMapping
-    @CrossOrigin
     public void save(@Validated @RequestBody ProvinceGuildRequest request) {
         postmanAdapter(request);
         Optional<CentralGuild> centralGuild =
@@ -79,7 +77,6 @@ public class ProvinceGuildController {
     }
 
     @PutMapping
-    @CrossOrigin
     public void update(@Validated @RequestBody ProvinceGuildRequest request) {
         postmanAdapter(request);
         Optional<CentralGuild> centralGuild =
@@ -100,7 +97,6 @@ public class ProvinceGuildController {
     }
 
     @DeleteMapping
-    @CrossOrigin
     public void delete(@RequestParam("code") int code) {
         service.delete(code);
         log.info("deleted code: {}", code);

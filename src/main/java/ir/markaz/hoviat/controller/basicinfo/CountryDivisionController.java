@@ -31,7 +31,7 @@ public class CountryDivisionController {
 
     @PostConstruct
     public void init() {
-        loadTree();
+//        loadTree();
     }
 
     private void loadTree() {
@@ -44,7 +44,6 @@ public class CountryDivisionController {
     }
 
     @GetMapping
-    @CrossOrigin
     public PageResponse<List<CountryDivisionFlatResponse>> getPage(@PathParam("page") int page,
                                                                    @PathParam("pageSize") int pageSize,
                                                                    @PathParam("orderBy") String orderBy,
@@ -59,7 +58,6 @@ public class CountryDivisionController {
     }
 
     @GetMapping(value = Addresses.TREE)
-    @CrossOrigin
     public CountryDivisionResponse getTree() {
         return controllerCacheManager.getTree().orElseThrow(
                 () -> new RuntimeException("There is an exception is loading country divisions"));
@@ -86,7 +84,6 @@ public class CountryDivisionController {
     }
 
     @GetMapping(value = Addresses.LAZY)
-    @CrossOrigin
     public PageResponse<List<LazyResponse>> getAllLazy() {
         final var allLazy =
                 service.getAllLazy();
@@ -98,7 +95,6 @@ public class CountryDivisionController {
     }
 
     @PostMapping
-    @CrossOrigin
     public void save(@Validated @RequestBody CountryDivisionRequest request) {
         service.save(request.getCode(), request.getParent(), request.getName(), request.getType());
         reloadTree();
@@ -106,7 +102,6 @@ public class CountryDivisionController {
     }
 
     @PutMapping
-    @CrossOrigin
     public void update(@Validated @RequestBody CountryDivisionRequest request) {
         service.update(request.getId(), request.getParent(), request.getName(), request.getType());
         reloadTree();
@@ -114,7 +109,6 @@ public class CountryDivisionController {
     }
 
     @DeleteMapping
-    @CrossOrigin
     public void delete(@RequestParam("code") int code) {
         service.delete(code);
         reloadTree();

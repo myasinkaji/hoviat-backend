@@ -26,7 +26,6 @@ public class TagCompanyController {
     }
 
     @GetMapping
-    @CrossOrigin
     public PageResponse<List<TagCompanyResponse>> getPage(@PathParam("page") int page,
                                                           @PathParam("pageSize") int pageSize,
                                                           @PathParam("orderBy") String orderBy,
@@ -41,7 +40,6 @@ public class TagCompanyController {
     }
 
     @PostMapping
-    @CrossOrigin
     public void saveTagCompany(@Validated @RequestBody TagCompanyRequest request) {
         var company = new TagCompany(request.getUniqueId(), request.getCompanyName(),
                 request.getPostalCode(), request.getEstablishedYear(),
@@ -54,13 +52,11 @@ public class TagCompanyController {
     }
 
     @PutMapping
-    @CrossOrigin
     public void updateTagCompany(@Validated @RequestBody TagCompanyRequest request) {
         log.info("update is not implemented!");
     }
 
     @DeleteMapping
-    @CrossOrigin
     public void deleteTagCompany(@RequestParam("id") int id) {
         service.delete(id);
         log.info("deleted id: {}", id);
